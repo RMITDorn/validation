@@ -1,0 +1,51 @@
+This is an add-on to CakePHP framework that allows for client-side validation.
+
+There are number of advantages for doing client-side vs server-side validations. Server-side validations are definitely more secure but requires you having to make the user do a request to the server each time they want to submit information into the application, bothersome if the data entered does not meet the systems requirements. Hence the user will have to keep submitting each time the information incorrect. Client-side validation allows the user to do most if not all the validation upfront making your application more user friendly and speeding up how the information gets processed.
+
+CakePHP already has a built in data validation which is an important part of its utility core. In the example below the $validate array is added to the User Model with validation rules that allows you to check if user enters more than 50 characters and if the user the field is empty, also allows you choose what error message should be displayed if the field is not valid.
+
+ 
+
+class User extends AppModel {
+
+    public $validate = array('name' = array('notEmpty' => array('rule' => array('notEmpty'), 'message' => 'Please User Name is required', 'required' => true, 'last' => true ), 'maxlength' => array('rule' => array('maxlength', 50), 'message' => 'Cannot be more than 50 characters', 'allowEmpty' => true, 'required' => true ) ) );
+
+} 
+
+The add-on allows you to use it in a relatively similar manner.
+
+
+
+echo $this->Form->create('User', array('url' => array('controller' => 'user', 'action' => 'login')), true);
+
+echo $this->Form->input('User.name', array(), array('forms' => array('UserUserLoginForm'), 'messages' => array('required' => 'Please User Name is required', 'maxlength' => 'Cannot be more than 50 characters'), 'rules' => array('required' => true, 'maxlength' => 50) ) );
+
+echo $this->Form->end('submit', array('UserUserLoginForm') );
+
+Usage for $validation options:
+
+
+
+$model - string - model object
+$options - array - An array of html attributes
+$clientSideValidation - boolean - turns clientsidevalidation on or off.
+
+echo $this->Form->create($model, $options, $clientSideValidation)
+
+$validation = array('forms' => array(), 'message' => array(), 'rules' => array())
+----------------------------------------------------------------------------------
+$forms - array - ids of the forms that the elements to be validated are anchored to
+$message - array - error messages per rules
+$rules - array - list of validation rules.
+
+echo $this->Form->input($fieldName, $options = array(), $validation = array());
+
+$options - mixed - option as value
+$links - array - unique identifiers (Activates the validation calls)
+
+echo $this->Form->end($options, $links );
+
+
+The add-on plugs into jQuery Validations Plugin very popular and well documented, it is also based off the JqueryEngine Helper, so at the moment you might be out of luck if you are using a different JavaScript library.
+
+Hope you find it helpful. See Source Code here!
